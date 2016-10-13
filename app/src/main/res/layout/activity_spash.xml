@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/bg_1">
@@ -20,5 +21,14 @@
         android:text="倒计时3s"
         android:textSize="12sp" />
 
-
+    <com.ch.date1008.CountDownView
+        android:id="@+id/count_down_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:border_color="#0000ff"
+        app:border_width="3dp"
+        app:text="跳过广告"
+        app:textColor="#ff0000"
+        app:textSize="14sp" />
 </RelativeLayout>
