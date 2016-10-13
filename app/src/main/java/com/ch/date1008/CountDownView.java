@@ -42,6 +42,7 @@ public class CountDownView extends View {
     private StaticLayout staticLayout;
     private float progress;
     private CountDownViewListener listener;
+    private CountDownTimer countDownTimer;
 
 
     public CountDownView(Context context) {
@@ -95,7 +96,7 @@ public class CountDownView extends View {
         borderPaint.setStyle(Paint.Style.STROKE);
         borderPaint.setStrokeWidth(borderWidth);
         borderPaint.setDither(true);
-       // borderPaint.setAlpha(90);
+        // borderPaint.setAlpha(90);
 
         int textWidth = (int) textPaint.measureText(text, 0, (text.length() + 1) / 2);
 
@@ -144,7 +145,7 @@ public class CountDownView extends View {
         int width = getMeasuredWidth();
         int min = Math.min(width, height);
         //画圆
-        canvas.drawCircle(width / 2, height / 2, (float) (min / 2-(1.5*borderWidth)), cyclerPaint);
+        canvas.drawCircle(width / 2, height / 2, (float) (min / 2 - (1.5 * borderWidth)), cyclerPaint);
 
         RectF rectF;
 //        if (width > height) {
@@ -156,7 +157,7 @@ public class CountDownView extends View {
         if (width > height) {
             rectF = new RectF((width - min) / 2 - 2 * borderWidth, 0, (width + min) / 2 + borderWidth * 2, height + borderWidth);
         } else {
-            rectF = new RectF(borderWidth/2, height / 2 - min / 2 + borderWidth/2, width - borderWidth/2 , height / 2 + min / 2 - borderWidth/2 );
+            rectF = new RectF(borderWidth / 2, height / 2 - min / 2 + borderWidth / 2, width - borderWidth / 2, height / 2 + min / 2 - borderWidth / 2);
         }
 
 
@@ -173,7 +174,7 @@ public class CountDownView extends View {
 
     public void start(final int time) {
 
-        CountDownTimer countDownTimer = new CountDownTimer(time, 60) {
+       countDownTimer = new CountDownTimer(time, 60) {
             @Override
             public void onTick(long millisUntilFinished) {
                 progress = ((time - millisUntilFinished) / (float) time) * 360;
@@ -185,7 +186,15 @@ public class CountDownView extends View {
                 listener.onFinshCount();
                 invalidate();
             }
-        }.start();
+        };
+        countDownTimer.start();
+    }
+
+    public void stop() {
+        if (countDownTimer != null) {
+
+            countDownTimer.cancel();
+        }
     }
 
     public void setCountDownViewListener(CountDownViewListener listener) {
