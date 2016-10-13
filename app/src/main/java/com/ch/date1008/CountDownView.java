@@ -75,13 +75,12 @@ public class CountDownView extends View {
 
     private void init() {
 
-        cyclerCanvas = new Canvas();
         cyclerPaint = new Paint();
         cyclerPaint.setAntiAlias(true);
         cyclerPaint.setColor(backgroundColor);
         cyclerPaint.setStyle(Paint.Style.FILL);
         cyclerPaint.setDither(true);
-        cyclerPaint.setAlpha(60);
+        // cyclerPaint.setAlpha(60);
 
 
         textPaint = new TextPaint();
@@ -96,7 +95,7 @@ public class CountDownView extends View {
         borderPaint.setStyle(Paint.Style.STROKE);
         borderPaint.setStrokeWidth(borderWidth);
         borderPaint.setDither(true);
-        borderPaint.setAlpha(90);
+       // borderPaint.setAlpha(90);
 
         int textWidth = (int) textPaint.measureText(text, 0, (text.length() + 1) / 2);
 
@@ -123,7 +122,7 @@ public class CountDownView extends View {
 //            widthSize = staticLayout.getWidth()*2;
 //        }
         if (widthMode == MeasureSpec.AT_MOST) {
-            widthSize = (int) ((staticLayout.getWidth()+borderWidth) * 2);
+            widthSize = (int) ((staticLayout.getWidth() + borderWidth) * 2);
         }
 
 //        if (heightMode != MeasureSpec.EXACTLY) {
@@ -131,7 +130,7 @@ public class CountDownView extends View {
 //        }
 
         if (heightMode == MeasureSpec.AT_MOST) {
-            heightSize = (int) ((staticLayout.getHeight()+borderWidth) * 2);
+            heightSize = (int) ((staticLayout.getHeight() + borderWidth) * 2);
         }
 
         setMeasuredDimension(widthSize, heightSize);
@@ -144,21 +143,28 @@ public class CountDownView extends View {
         int height = getMeasuredHeight();
         int width = getMeasuredWidth();
         int min = Math.min(width, height);
-
         //画圆
-        canvas.drawCircle(width / 2, height / 2, min / 2, cyclerPaint);
+        canvas.drawCircle(width / 2, height / 2, (float) (min / 2-(1.5*borderWidth)), cyclerPaint);
 
         RectF rectF;
+//        if (width > height) {
+//            rectF = new RectF((width - min) / 2 + borderWidth / 2, borderWidth / 2, (width + min) / 2 - borderWidth / 2, height - borderWidth / 2);
+//        } else {
+//            rectF = new RectF(borderWidth / 2, height / 2 - min / 2 + borderWidth / 2, width - borderWidth / 2, height / 2 + min / 2 - borderWidth / 2);
+//        }
+
         if (width > height) {
-            rectF = new RectF((width - min) / 2 + borderWidth / 2, borderWidth / 2, (width + min) / 2 - borderWidth / 2, height - borderWidth / 2);
+            rectF = new RectF((width - min) / 2 - 2 * borderWidth, 0, (width + min) / 2 + borderWidth * 2, height + borderWidth);
         } else {
-            rectF = new RectF(borderWidth / 2, height / 2 - min / 2 + borderWidth / 2, width - borderWidth / 2, height / 2 + min / 2 - borderWidth / 2);
+            rectF = new RectF(borderWidth/2, height / 2 - min / 2 + borderWidth/2, width - borderWidth/2 , height / 2 + min / 2 - borderWidth/2 );
         }
+
 
         //画边缘线
         canvas.drawArc(rectF, -90, progress, false, borderPaint);
         // canvas.drawText("稍等片刻", width / 2, height / 2 - textPaint.descent() + textPaint.getTextSize() / 2, textPaint);
         canvas.translate(width / 2, height / 2 - staticLayout.getHeight() / 2);
+
 
         staticLayout.draw(canvas);
 
