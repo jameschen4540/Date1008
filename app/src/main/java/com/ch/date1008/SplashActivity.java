@@ -24,7 +24,7 @@ public class SplashActivity extends AppCompatActivity implements CountDownView.C
         //  btn_time = ((TextView) findViewById(R.id.btn_time));
         countDownView = ((CountDownView) findViewById(R.id.count_down_view));
         //countDownView.setAlpha(0.5f);
-        countDownView.start(10000);
+        countDownView.start(4000);
         countDownView.setCountDownViewListener(this);
         countDownView.setOnClickListener(this);
 
