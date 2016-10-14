@@ -102,7 +102,7 @@ public class WaveLoadingView extends View {
         mPath.reset();
         y = (int) ((1 - mPercent / 100f) * mHeight);
         mPath.moveTo(0, y);
-        mPath.cubicTo(200 + x * 2, 70 + y, 300 + x * 2, y - 60, mWidth, y);//前两个参数是辅助点
+        mPath.cubicTo(200 + x * 2, 60 + y, 200 + x * 2, y - 60, mWidth, y);//前两个参数是辅助点
         mPath.lineTo(mWidth, mHeight);//充满整个画布
         mPath.lineTo(0, mHeight);//充满整个画布
         mPath.close();

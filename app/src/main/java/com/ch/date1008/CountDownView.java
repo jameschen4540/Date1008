@@ -174,7 +174,7 @@ public class CountDownView extends View {
 
     public void start(final int time) {
 
-       countDownTimer = new CountDownTimer(time, 60) {
+       countDownTimer = new CountDownTimer(time, 10) {
             @Override
             public void onTick(long millisUntilFinished) {
                 progress = ((time - millisUntilFinished) / (float) time) * 360;
@@ -196,6 +196,7 @@ public class CountDownView extends View {
             countDownTimer.cancel();
         }
     }
+
 
     public void setCountDownViewListener(CountDownViewListener listener) {
         this.listener = listener;
