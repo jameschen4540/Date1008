@@ -229,6 +229,6 @@ public class DataController {
     }
 
     public interface SaveEditListener {
-        void saveEdit(MyAdapter.HolderTYpe_I holderTYpe_i, String value);
+        void saveEdit(MyAdapter.BaseHolder holderTYpe_i, String value);
     }
 }

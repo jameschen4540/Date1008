@@ -21,14 +21,14 @@ import java.util.TreeMap;
  * 创建人：陈志平
  * 创建时间：2016/10/17  15:36
  */
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> implements DataController.SaveEditListener{
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> implements DataController.SaveEditListener {
 
     private static final String TAG = "qq";
     private Context context;
     private List<DataBean> list;
     private final int TYPE_I = 0;
     private final int TYPE_II = 1;
-    private Map<Integer,String> dataMap=new TreeMap<>();
+    private Map<Integer, String> dataMap = new TreeMap<>();
 
 
     public MyAdapter(Context context, List<DataBean> list) {
@@ -78,14 +78,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> implem
             myHolder.et_parameters.setHint("请输入" + dataBean.getName());
             myHolder.tv_parameter.setText(dataBean.getName() + "(" + dataBean.getUnit() + ")");
 
-           final DataController controller = new DataController(myHolder, dataBean,this);
+            final DataController controller = new DataController(myHolder, dataBean, this);
 
             myHolder.btn_minus.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
 
 
-                    controller.setData(myHolder,dataBean);
+                    controller.setData(myHolder, dataBean);
 
                     controller.onTouchChange("minus", event.getAction(), v);
                     return false;
@@ -96,14 +96,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> implem
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
 
-                    controller.setData(myHolder,dataBean);
+                    controller.setData(myHolder, dataBean);
                     controller.onTouchChange("plus", event.getAction(), v);
                     return false;
                 }
             });
 
-           // notifyDataSetChanged();
-            dataMap.put(position,myHolder.et_parameters.getText().toString());
+            // notifyDataSetChanged();
+            dataMap.put(position, myHolder.et_parameters.getText().toString());
 
         } else if (viewType == TYPE_II) {
 
@@ -113,14 +113,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> implem
             holderType_ii.et_max.setText(dataBean.getMaxDefault());
             //通过设置tag,防止position紊乱
             holderType_ii.et_min.setTag(position);
-        }
 
+            dataMap.put(position, holderType_ii.et_min.getText().toString() + "/" + holderType_ii.et_max.getText().toString());
+        }
     }
 
     @Override
-    public void saveEdit(HolderTYpe_I holderTYpe_i, String value) {
+    public void saveEdit(BaseHolder holder, String value) {
+        HolderTYpe_I holderTYpe_i = (HolderTYpe_I) holder;
         holderTYpe_i.et_parameters.setText(value);
-        dataMap.put(holderTYpe_i.getAdapterPosition(),holderTYpe_i.et_parameters.getText().toString());
+        dataMap.put(holderTYpe_i.getAdapterPosition(), holderTYpe_i.et_parameters.getText().toString());
     }
 
 
@@ -131,7 +133,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> implem
     }
 
 
-     class HolderTYpe_I extends BaseHolder {
+    class HolderTYpe_I extends BaseHolder {
 
         public final TextView tv_parameter;
         public final ImageView btn_minus;
@@ -147,7 +149,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> implem
         }
     }
 
-     class HolderType_II extends BaseHolder {
+    class HolderType_II extends BaseHolder {
 
         private TextView tv_name;
         private EditText et_min, et_max;
@@ -162,20 +164,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> implem
     }
 
 
-
     public String getEditText() {
 
-        StringBuffer buffer=new StringBuffer();
+        StringBuffer buffer = new StringBuffer();
         Iterator iter = dataMap.entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry entry = (Map.Entry) iter.next();
             String s = entry.getValue().toString();
-            buffer.append(","+s);
+            buffer.append("," + s);
         }
 
 
-      //  String s = dataMap.get(0);
-       // Log.e(TAG, "getEditText: "+s );
+        //  String s = dataMap.get(0);
+        // Log.e(TAG, "getEditText: "+s );
         return buffer.toString();
     }
 
