@@ -2,8 +2,6 @@ package com.ch.date1008;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,7 +21,7 @@ import java.util.TreeMap;
  * 创建人：陈志平
  * 创建时间：2016/10/17  15:36
  */
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> implements DataController.SaveEditListener{
 
     private static final String TAG = "qq";
     private Context context;
@@ -80,33 +78,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> {
             myHolder.et_parameters.setHint("请输入" + dataBean.getName());
             myHolder.tv_parameter.setText(dataBean.getName() + "(" + dataBean.getUnit() + ")");
 
-
-//            myHolder.et_parameters.addTextChangedListener(new TextWatcher() {
-//                @Override
-//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//                }
-//
-//                @Override
-//                public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//                }
-//
-//                @Override
-//                public void afterTextChanged(Editable s) {
-//                    myHolder.et_parameters.setText(s.toString());
-//                }
-//            });
-
-            final DataController controller = new DataController(myHolder, dataBean);
+           final DataController controller = new DataController(myHolder, dataBean,this);
 
             myHolder.btn_minus.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                   // dataMap.put(position,myHolder.et_parameters.getText().toString());
+
 
                     controller.setData(myHolder,dataBean);
-                    //  Log.e(TAG, "onTouch: "+myHolder.et_parameters.getText().toString());
+
                     controller.onTouchChange("minus", event.getAction(), v);
                     return false;
                 }
@@ -115,16 +95,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> {
             myHolder.btn_plus.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    // controller.onTouchChange("plus", event.getAction(), v);
-                  //  dataMap.put(position,myHolder.et_parameters.getText().toString());
+
                     controller.setData(myHolder,dataBean);
                     controller.onTouchChange("plus", event.getAction(), v);
                     return false;
                 }
             });
 
+           // notifyDataSetChanged();
             dataMap.put(position,myHolder.et_parameters.getText().toString());
-           // Log.e(TAG, "onTouch: "+myHolder.et_parameters.getText().toString());
+
         } else if (viewType == TYPE_II) {
 
             final HolderType_II holderType_ii = (HolderType_II) holder;
@@ -132,49 +112,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> {
             holderType_ii.et_min.setText(dataBean.getMinDefault());
             holderType_ii.et_max.setText(dataBean.getMaxDefault());
             //通过设置tag,防止position紊乱
-
             holderType_ii.et_min.setTag(position);
-
-
-            //添加editText的监听事件
-            holderType_ii.et_min.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                    holderType_ii.et_min.setText(s.toString());
-
-                }
-            });
-
-            holderType_ii.et_max.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    holderType_ii.et_max.setText(s.toString());
-                }
-            });
-
         }
 
+    }
+
+    @Override
+    public void saveEdit(HolderTYpe_I holderTYpe_i, String value) {
+        holderTYpe_i.et_parameters.setText(value);
+        dataMap.put(holderTYpe_i.getAdapterPosition(),holderTYpe_i.et_parameters.getText().toString());
     }
 
 
@@ -185,7 +131,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> {
     }
 
 
-    public class HolderTYpe_I extends BaseHolder {
+     class HolderTYpe_I extends BaseHolder {
 
         public final TextView tv_parameter;
         public final ImageView btn_minus;
@@ -201,7 +147,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> {
         }
     }
 
-    public class HolderType_II extends BaseHolder {
+     class HolderType_II extends BaseHolder {
 
         private TextView tv_name;
         private EditText et_min, et_max;
@@ -215,9 +161,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> {
         }
     }
 
-    public interface SaveEditListener {
-        void saveEdit(int position, String value);
-    }
+
 
     public String getEditText() {
 

@@ -57,5 +57,13 @@ public class DetailActivity extends AppCompatActivity {
         dataBean4.setMinDefault("20");
         dataBean4.setMaxDefault("60");
         list.add(dataBean4);
+        DataBean dataBean5 = new DataBean("滴速", "次/分", "20", "30", "70");
+        list.add(dataBean5);
+        DataBean dataBean6 = new DataBean("脉搏", "次/分", "20", "40", "50");
+        list.add(dataBean6);
+        DataBean dataBean7 = new DataBean("呼吸", "次/分", "20", "60", "80");
+        list.add(dataBean7);
+        DataBean dataBean8 = new DataBean("体温", "℃", "37", "37.2", "42");
+        list.add(dataBean8);
     }
 }

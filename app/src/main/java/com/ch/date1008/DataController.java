@@ -18,13 +18,12 @@ public class DataController {
     private double currentTem, minTem, maxTem, tem;
     private MyAdapter.HolderTYpe_I holder;
     private DataBean dataBean;
+    private MyAdapter adapter;
     private String name;
     private MiusThread miusThread;
     private boolean isOnLongClick;
     private PlusThread plusThread;
-
-
-
+    private SaveEditListener listener;
 
 
     //更新文本框的值
@@ -41,20 +40,20 @@ public class DataController {
                                 } else {
                                     tem = 10 * minTem;
                                 }
-
+                                listener.saveEdit(holder, tem / 10 + "");
                                 holder.et_parameters.setText(tem / 10 + "");
 
                             } else {
-                                if (currentNum >  min && currentNum <=  max) {
+                                if (currentNum > min && currentNum <= max) {
                                     --currentNum;
                                 } else {
                                     currentNum = min;
                                 }
 
+                                listener.saveEdit(holder, currentNum + "");
                                 holder.et_parameters.setText(currentNum + "");
 
                             }
-
 
 
                             break;
@@ -66,12 +65,13 @@ public class DataController {
                         case R.id.btn_plus://温度加
 
                             if (name.equals("体温")) {
-                                if (tem >= 10*minTem && tem < 10*maxTem) {
+                                if (tem >= 10 * minTem && tem < 10 * maxTem) {
                                     ++tem;
                                 } else {
                                     tem = 10 * maxTem;
                                 }
 
+                                listener.saveEdit(holder, tem / 10 + "");
                                 holder.et_parameters.setText(tem / 10 + "");
                             } else {
                                 if (currentNum >= min && currentNum < max) {
@@ -79,11 +79,13 @@ public class DataController {
                                 } else {
                                     currentNum = max;
                                 }
-                               holder.et_parameters.setText(currentNum + "");
+
+                                listener.saveEdit(holder, currentNum + "");
+                                holder.et_parameters.setText(currentNum + "");
 
                             }
 
-                         //   Log.e("TAG", "当前数值: " + tem/10);
+                            //   Log.e("TAG", "当前数值: " + tem/10);
                             break;
 
                     }
@@ -96,12 +98,12 @@ public class DataController {
         }
 
 
-
     };
 
-    public DataController(MyAdapter.HolderTYpe_I holder, DataBean dataBean) {
+    public DataController(MyAdapter.HolderTYpe_I holder, DataBean dataBean, MyAdapter adapter) {
         this.holder = holder;
         this.dataBean = dataBean;
+        this.listener = adapter;
         name = dataBean.getName();
 
         if (name != null) {
@@ -134,11 +136,10 @@ public class DataController {
                 currentNum = Integer.parseInt(holder.et_parameters.getText().toString());
                 min = Integer.parseInt(dataBean.getMin());
                 max = Integer.parseInt(dataBean.getMax());
-              //  Log.e("TAG", "DataController: " + currentNum);
+                //  Log.e("TAG", "DataController: " + currentNum);
             }
         }
     }
-
 
 
     public void onTouchChange(String methodName, int eventAction, View v) {
@@ -225,5 +226,9 @@ public class DataController {
                 super.run();
             }
         }
+    }
+
+    public interface SaveEditListener {
+        void saveEdit(MyAdapter.HolderTYpe_I holderTYpe_i, String value);
     }
 }

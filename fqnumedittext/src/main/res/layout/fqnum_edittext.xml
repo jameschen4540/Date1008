@@ -18,7 +18,6 @@
         android:paddingTop="5dp"
         android:scrollHorizontally="false"
         android:scrollbars="vertical"
-        android:textColor="#000000"
         android:textCursorDrawable="@null" />
 
     <TextView

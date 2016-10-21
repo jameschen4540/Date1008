@@ -41,7 +41,7 @@ public class FQNumEditText extends RelativeLayout {
         etContent = ((EditText) inflate.findViewById(R.id.etContent));
         tvNum = ((TextView) inflate.findViewById(R.id.tvNum));
         vLine = inflate.findViewById(R.id.vLine);
-
+       // etContent.setTextColor(R.drawable.textcolor);
 
     }
 
@@ -85,7 +85,18 @@ public class FQNumEditText extends RelativeLayout {
         return this;
     }
 
-    /**
+//    /**
+//     * 设置字体颜色
+//     *
+//     * @param color --颜色值
+//     * @return
+//     */
+//    public FQNumEditText setTextColor(int color) {
+//        etContent.setTextColor(Color.parseColor(color));
+//        return this;
+//    }
+
+    /**int
      * 设置字体颜色
      *
      * @param color --颜色值
@@ -97,7 +108,7 @@ public class FQNumEditText extends RelativeLayout {
     }
 
     /**
-     * 设置字体颜色
+     * 设置字体大小
      *
      * @return
      */
