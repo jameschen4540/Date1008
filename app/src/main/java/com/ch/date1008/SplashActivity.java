@@ -90,6 +90,7 @@ public class SplashActivity extends AppCompatActivity implements CountDownView.C
     public void onFinshCount() {
         Intent i = new Intent(SplashActivity.this, MainActivity.class);
         startActivity(i);
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
         finish();
 
     }
@@ -99,6 +100,7 @@ public class SplashActivity extends AppCompatActivity implements CountDownView.C
         countDownView.stop();
         Intent i = new Intent(SplashActivity.this, MainActivity.class);
         startActivity(i);
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
         finish();
     }
 }

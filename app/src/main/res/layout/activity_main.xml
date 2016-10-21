@@ -7,10 +7,17 @@
     android:orientation="vertical"
     tools:context="com.ch.date1008.MainActivity">
 
-    <View
+    <Button
+        android:id="@+id/btn_detail"
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:text="Hello World!" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/fqnum_edittext_bg1"
+        android:layout_margin="10dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="20sp"
+        android:text="BUTTON" />
 
 
 

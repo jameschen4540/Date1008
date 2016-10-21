@@ -20,6 +20,22 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
+    <style name="anim_fade" parent="AppTheme">
+
+        <item name="android:windowAnimationStyle">@style/fade</item>
+
+    </style>
+
+    <style name="fade" parent="@android:style/Animation.Activity">
+
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/fade_out</item>
+
+    </style>
+
+
 
 
 </resources>
