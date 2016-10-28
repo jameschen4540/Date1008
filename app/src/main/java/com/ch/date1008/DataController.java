@@ -24,6 +24,7 @@ public class DataController {
     private boolean isOnLongClick;
     private PlusThread plusThread;
     private SaveEditListener listener;
+    private int currentPosition;
 
 
     //更新文本框的值
@@ -104,6 +105,8 @@ public class DataController {
         this.holder = holder;
         this.dataBean = dataBean;
         this.listener = adapter;
+        int position= (int) holder.et_parameters.getTag();
+        currentPosition=position;
         name = dataBean.getName();
 
         if (name != null) {
@@ -136,45 +139,56 @@ public class DataController {
                 currentNum = Integer.parseInt(holder.et_parameters.getText().toString());
                 min = Integer.parseInt(dataBean.getMin());
                 max = Integer.parseInt(dataBean.getMax());
-                //  Log.e("TAG", "DataController: " + currentNum);
             }
         }
     }
 
 
     public void onTouchChange(String methodName, int eventAction, View v) {
-        //按下松开分别对应启动停止减线程方法
-        if ("minus".equals(methodName)) {
-            miusThread = new MiusThread(v);
-            if (eventAction == MotionEvent.ACTION_DOWN) {
-                isOnLongClick = true;
-                miusThread.start();
 
-            } else if (eventAction == MotionEvent.ACTION_UP) {
-                if (miusThread != null) {
-                    isOnLongClick = false;
-                    miusThread.interrupt();
-                }
-            } else if (eventAction == MotionEvent.ACTION_MOVE) {
-                if (miusThread != null) {
+        if (holder.getAdapterPosition() == currentPosition) {
+            //按下松开分别对应启动停止减线程方法
+            if ("minus".equals(methodName)) {
+                miusThread = new MiusThread(v);
+
+                if (eventAction == MotionEvent.ACTION_DOWN) {
                     isOnLongClick = true;
+                    miusThread.start();
+
+                } else if (eventAction == MotionEvent.ACTION_UP) {
+                    if (miusThread != null) {
+                        isOnLongClick = false;
+                        miusThread.interrupt();
+                    }
+                } else if (eventAction == MotionEvent.ACTION_MOVE) {
+                    if (miusThread != null) {
+                        isOnLongClick = true;
+                    }
+                }
+            } else if ("plus".equals(methodName)) {//按下松开分别对应启动停止加线程方法
+                plusThread = new PlusThread(v);
+                if (eventAction == MotionEvent.ACTION_DOWN) {
+                    isOnLongClick = true;
+                    plusThread.start();
+                    //isOnLongClick=false;
+                    Log.e("11111", "onTouchChange:eventAction == MotionEvent.ACTION_DOWN::::::::::::: "+isOnLongClick);
+                } else if (eventAction == MotionEvent.ACTION_UP) {
+                    if (plusThread != null) {
+                        plusThread.interrupt();
+                        isOnLongClick = false;
+
+                        Log.e("11111", "onTouchChange:eventAction == MotionEvent.ACTION_UP::::::::::::: "+isOnLongClick);
+                    }
+                } else if (eventAction == MotionEvent.ACTION_MOVE) {
+                    if (plusThread != null) {
+                        isOnLongClick = true;
+
+                        Log.e("11111", "onTouchChange:eventAction == MotionEvent.ACTION_UP::::::::::::: "+isOnLongClick);
+                    }
                 }
             }
-        } else if ("plus".equals(methodName)) {//按下松开分别对应启动停止加线程方法
-            plusThread = new PlusThread(v);
-            if (eventAction == MotionEvent.ACTION_DOWN) {
-                isOnLongClick = true;
-                plusThread.start();
-            } else if (eventAction == MotionEvent.ACTION_UP) {
-                if (plusThread != null) {
-                    isOnLongClick = false;
-                    plusThread.interrupt();
-                }
-            } else if (eventAction == MotionEvent.ACTION_MOVE) {
-                if (plusThread != null) {
-                    isOnLongClick = true;
-                }
-            }
+        } else {
+            isOnLongClick=false;
         }
     }
 

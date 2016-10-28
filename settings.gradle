@@ -1,1 +1,1 @@
-include ':app', ':fqnumedittext'
+include ':app', ':fqnumedittext', ':customedittext'

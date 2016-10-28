@@ -2,6 +2,8 @@ package com.ch.date1008;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,6 +31,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> implem
     private final int TYPE_I = 0;
     private final int TYPE_II = 1;
     private Map<Integer, String> dataMap = new TreeMap<>();
+    private int index = -1;
+    private String str;
 
 
     public MyAdapter(Context context, List<DataBean> list) {
@@ -77,14 +81,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> implem
             myHolder.et_parameters.setText(dataBean.getCurrent());
             myHolder.et_parameters.setHint("请输入" + dataBean.getName());
             myHolder.tv_parameter.setText(dataBean.getName() + "(" + dataBean.getUnit() + ")");
+            myHolder.et_parameters.setTag(position);
 
             final DataController controller = new DataController(myHolder, dataBean, this);
 
+
+            myHolder.et_parameters.setTag(position);
             myHolder.btn_minus.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
 
-
+                    //设置最新数值
                     controller.setData(myHolder, dataBean);
 
                     controller.onTouchChange("minus", event.getAction(), v);
@@ -102,8 +109,26 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> implem
                 }
             });
 
-            // notifyDataSetChanged();
-            dataMap.put(position, myHolder.et_parameters.getText().toString());
+
+
+            myHolder.et_parameters.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                  dataMap.put(position,s.toString());
+                }
+            });
+
+            saveData(position,myHolder);
 
         } else if (viewType == TYPE_II) {
 
@@ -114,7 +139,55 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> implem
             //通过设置tag,防止position紊乱
             holderType_ii.et_min.setTag(position);
 
-            dataMap.put(position, holderType_ii.et_min.getText().toString() + "/" + holderType_ii.et_max.getText().toString());
+            holderType_ii.et_min.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    str=s.toString();
+                }
+            });
+            holderType_ii.et_max.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    dataMap.put(position,str+"/"+s.toString());
+
+                }
+            });
+            saveData(position, holderType_ii);
+        }
+    }
+
+    private void saveData(int position, BaseHolder holder) {
+
+        int type = getItemViewType(position);
+        if (type == TYPE_I) {
+            HolderTYpe_I myHolder = (HolderTYpe_I) holder;
+            myHolder.et_parameters.setTag(position);
+            dataMap.put(position, myHolder.et_parameters.getText().toString());
+        } else {
+            HolderType_II holderTYpe_ii = (HolderType_II) holder;
+            String min = holderTYpe_ii.et_min.getText().toString();
+            String max = holderTYpe_ii.et_max.getText().toString();
+            dataMap.put(position, min + "/" + max);
         }
     }
 
@@ -150,9 +223,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> implem
     }
 
     class HolderType_II extends BaseHolder {
-
-        private TextView tv_name;
-        private EditText et_min, et_max;
+        public TextView tv_name;
+        public EditText et_min, et_max;
 
         public HolderType_II(View itemView) {
             super(itemView);
@@ -164,9 +236,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> implem
     }
 
 
+
     public String getEditText() {
 
         StringBuffer buffer = new StringBuffer();
+
         Iterator iter = dataMap.entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry entry = (Map.Entry) iter.next();
@@ -174,44 +248,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.BaseHolder> implem
             buffer.append("," + s);
         }
 
-
-        //  String s = dataMap.get(0);
-        // Log.e(TAG, "getEditText: "+s );
         return buffer.toString();
     }
 
-//    public class TextSwatch implements TextWatcher {
-//
-//        private BaseHolder baseHolder;
-//
-//        public TextSwatch(BaseHolder baseHolder) {
-//            this.baseHolder = baseHolder;
-//        }
-//
-//        @Override
-//        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//        }
-//
-//        @Override
-//        public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//        }
-//
-//        @Override
-//        public void afterTextChanged(Editable s) {
-//
-//            //用户输入完毕后，处理输入数据，回调给主界面处理
-//            SaveEditListener listener = (SaveEditListener) context;
-//
-//
-//            if (s != null) {
-//                listener.saveEdit(Integer.parseInt(mHolder.c_name_et.getTag().toString()), s.toString());
-//            }
-//
-//
-//        }
-//    }
 }
 
 

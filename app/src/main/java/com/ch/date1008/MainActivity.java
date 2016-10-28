@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         ed_text.setHint("请输入内容")
                 .setLength(100)
                 .setLineColor(Color.BLUE)
-                .setTextColor(Color.argb(125,120,0,120))
+                .setTextColor(Color.argb(125, 120, 0, 120))
                 .setTextSize(16)
                 .setMinHeight(100)
                 .setType(FQNumEditText.PERCENTAGE)
@@ -57,15 +57,13 @@ public class MainActivity extends AppCompatActivity {
         btn_detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent();
-                intent.setClass(MainActivity.this,DetailActivity.class);
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, DetailActivity.class);
                 startActivity(intent);
-               // overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                // overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
             }
         });
 
     }
-
-
 
 }

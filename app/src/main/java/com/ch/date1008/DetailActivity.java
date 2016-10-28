@@ -32,6 +32,8 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                // text.setText(list.get(0).getCurrent());
                 text.setText(adapter.getEditText());
+
+
             }
         });
         recyclerview = (RecyclerView)findViewById(R.id.recycler);
